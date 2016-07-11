@@ -1,0 +1,37 @@
+Co potrzeba do STM32f407vg:
+
+stm32f407xx.h
+core_cm4.h
+cmsis_gcc.h
+
+system_stm32f4xx.c
+system_stm32f4xx.h
+
+startup_stm32f407xx.s
+
+Po co?
+
+stm32f407xx.h            - definicje rejestrów i bitów
+
+startup_stm32f407xx.s    - This module performs:
+                              - Set the initial SP
+                              - Set the initial PC == Reset_Handler,
+                              - Set the vector table entries with the exceptions ISR address
+                              - Branches to main in the C library (which eventually calls main()).
+                                   After Reset the Cortex-M4 processor is in Thread mode,
+                                   priority is Privileged, and the Stack is set to Main.
+
+core_cm4.h               -zawiera definicje nazw rejestrów i bitów
+                         konfiguracyjnych peryferiów rdzenia
+                         (SysTick, NVIC, etc..) oraz kilka
+                         bardzo niskopoziomowych funkcji związanych z obsługą np.
+                         kontrolera przerwań (NVIC)
+cmsis_gcc.h              - funkcje operujące na rejestrach specjalnych
+                         rdzenia (np. dostęp do wskaźnika
+                         stosu i konfiguracja przerwań) oraz funkcje
+                         intrinsic, czyli proste wstawki asm umożliwiające
+                         wywołanie, z poziomu języka C, konkretnych
+                         rozkazów asm (np. __WFI( ), __NOP( ), itd...)
+
+system_stm32f4xx.c       - Podstawowa konfiguracja zegara na 16MHz
+system_stm32f4xx.h       Wewnętrzny RC
